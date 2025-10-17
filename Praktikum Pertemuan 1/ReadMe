@@ -7,19 +7,13 @@ NIM: 123140164
 Deskripsi Aplikasi
 Aplikasi Manajemen Tugas Mahasiswa adalah aplikasi web interaktif yang dirancang khusus untuk membantu mahasiswa mengelola tugas-tugas akademik mereka secara efektif dan efisien. Aplikasi ini menyediakan antarmuka yang user-friendly dengan fitur lengkap untuk menambah, mengedit, menghapus, dan memfilter tugas kuliah.
 
-Tujuan Aplikasi
-- Membantu mahasiswa mengorganisir tugas akademik dengan lebih baik
-- Menyediakan sistem pengingat deadline yang jelas
-- Memudahkan tracking progress penyelesaian tugas
-- Menyimpan data secara lokal di browser pengguna
-
 Fitur-Fitur Utama
-1. Manajemen Tugas (CRUD)
+1. List Tugas
 
-Create: Menambahkan tugas baru dengan informasi lengkap
-Read: Menampilkan daftar semua tugas dengan detail
-Update: Mengedit informasi tugas yang sudah ada
-Delete: Menghapus tugas yang tidak diperlukan
+Tambah Tugas: Menambahkan tugas baru dengan informasi lengkap
+List: Menampilkan daftar semua tugas dengan detail
+Edit: Mengedit informasi tugas yang sudah ada
+Hapus: Menghapus tugas yang tidak diperlukan
 
 2. Penyimpanan Data Lokal
 
@@ -33,9 +27,8 @@ Nama tugas tidak boleh kosong
 Mata kuliah harus dipilih
 Deadline harus diisi
 Deadline tidak boleh tanggal yang sudah lewat
-Pesan error yang jelas dan informatif
 
-4. Filter dan Pencarian
+4. Filter & Pencarian
 
 Pencarian: Cari tugas berdasarkan nama atau mata kuliah
 Filter Status: Tampilkan semua, selesai, atau belum selesai
@@ -50,31 +43,49 @@ Indikator deadline yang mendekat (3 hari)
 
 6. Status Tugas
 
-Toggle checkbox untuk menandai tugas selesai/belum selesai
+Tombol untuk menandai tugas selesai/belum selesai
 Visual strikethrough untuk tugas yang sudah selesai
 Badge warna untuk status deadline
-
-7. User Experience
-
-Desain modern dan responsive
-Animasi smooth untuk interaksi
-Modal form yang user-friendly
-Konfirmasi sebelum menghapus tugas
 
 
 Cara Menjalankan Aplikasi
 
-
+- Menambah Tugas Baru
+- Klik tombol "Tambah Tugas" di pojok kanan atas, lalu si form 
+Nama Tugas: Contoh "Membuat Laporan Praktikum"
+Mata Kuliah: Pilih dari dropdown
+Deadline: Pilih tanggal dari date picker
+- Klik "Simpan Tugas", tugas akan muncul di daftar
+- Jika tugas sudah selesai tandai tugas
+- Klik icon checkbox (⭕) di sebelah kiri tugas
+Icon akan berubah menjadi ✅, Nama tugas akan ter-strikethrough dab background berubah menjadi abu-abu
+- Mengedit Tugas jika ingin, Klik tombol Edit (✏️) pada tugas yang ingin diedit
+- Form akan muncul dengan data tugas yang sudah terisi
+- Ubah informasi yang diperlukan, lalu klik "Update Tugas"
+- Menghapus tugas jika ingin, klik tombol Delete (🗑️) pada tugas
+- Konfirmasi penghapusan akan muncul
+- Klik OK untuk menghapus atau batal
+- Mencari tugas, ketik kata kunci di kolom pencarian
+- Hasil akan difilter secara real-time
+- Pencarian mencakup nama tugas dan mata kuliah
+- Memfilter tugas, filter Status: Pilih "Semua Status", "Belum Selesai", atau "Selesai"
+Filter Mata Kuliah: Pilih mata kuliah tertentu atau "Semua Mata Kuliah"
 
 Screenshot Aplikasi
-1. Tampilan Utama (Dashboard)
+
+1. Dashboard
 Menampilkan:
 - Header dengan judul aplikasi
-- Tombol "Tugas Baru"
+- Tombol "Tambah Tugas"
 - Statistik (Total, Selesai, Belum Selesai)
-- Filter dan pencarian
+- Filter & pencarian
+- Hapus tugas
 - Daftar tugas
-2. Form Tambah/Edit Tugas
+- Warning badge merah untuk deadline dekat
+- Pesan peringatan "Deadline segera!"
+- Highlighting visual untuk tugas urgent
+
+2. Form
 Menampilkan:
 - Modal form yang overlay
 - Input nama tugas
@@ -82,20 +93,17 @@ Menampilkan:
 - Date picker untuk deadline
 - Validasi error messages
 - Tombol Simpan dan Batal
-3. Daftar Tugas dengan Filter
+
+3. Filter Tugas 
 Menampilkan:
 - Tugas yang difilter berdasarkan status
 - Pencarian aktif
 - Badge mata kuliah dan deadline
 - Tombol aksi (Edit, Delete)
 - Checkbox status penyelesaian
-4. Tugas dengan Deadline Mendekat
-Menampilkan:
-- Warning badge merah untuk deadline dekat
-- Pesan peringatan "Deadline segera!"
-- Highlighting visual untuk tugas urgent
 
-🛠️ Teknologi yang Digunakan
+
+Teknologi yang Digunakan
 Frontend
 
 HTML5: Struktur aplikasi
@@ -116,23 +124,25 @@ Component-Based Structure: Organisasi kode yang modular
 Penjelasan Teknis
 1. Implementasi localStorage
 Menyimpan Data
-javascriptfunction saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+// Simpan tugas ke localStorage
+function simpanKeStorage() {
+    localStorage.setItem('daftarTugas', JSON.stringify(daftarTugas));
 }
 
 Menggunakan localStorage.setItem() untuk menyimpan data
 Data array dikonversi ke JSON string dengan JSON.stringify()
-Key yang digunakan: 'tasks'
 Otomatis dipanggil setiap ada perubahan data
 
 Memuat Data
-javascriptfunction loadTasks() {
-    const storedTasks = localStorage.getItem('tasks');
-    if (storedTasks) {
-        tasks = JSON.parse(storedTasks);
+// Muat tugas dari localStorage 
+function muatTugas() {
+    const tugasTersimpan = localStorage.getItem('daftarTugas');
+    if (tugasTersimpan) {
+        daftarTugas = JSON.parse(tugasTersimpan);
     }
-    renderTasks();
-    updateStatistics();
+    tampilkanTugas();
+    perbaruiStatistik();
+    perbaruiFilterMataKuliah();
 }
 
 Menggunakan localStorage.getItem() untuk mengambil data
@@ -140,41 +150,46 @@ JSON string diparse kembali ke array dengan JSON.parse()
 Dipanggil saat aplikasi pertama kali dimuat
 Melakukan pengecekan apakah data ada
 
-Struktur Data
-javascript{
-    id: 1634567890123,           // Timestamp sebagai unique ID
-    name: "Laporan Praktikum",   // Nama tugas
-    subject: "Pemrograman Web",  // Mata kuliah
-    deadline: "2025-10-25",      // Tanggal deadline
-    completed: false,            // Status penyelesaian
-    createdAt: "2025-10-17..."   // Waktu pembuatan
-}
 2. Validasi Form
-Validasi Nama Tugas
-javascriptif (!name) {
-    // Tampilkan error: "Nama tugas tidak boleh kosong"
-    isValid = false;
-}
-Validasi Mata Kuliah
-javascriptif (!subject) {
-    // Tampilkan error: "Mata kuliah harus dipilih"
-    isValid = false;
-}
-Validasi Deadline
-javascriptif (!deadline) {
-    // Error: Deadline harus diisi
-    isValid = false;
-} else {
-    const selectedDate = new Date(deadline);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    if (selectedDate < today) {
-        // Error: Deadline tidak boleh tanggal yang sudah lewat
-        isValid = false;
+// Validasi form
+function validasiForm() {
+    hapusError();
+    let valid = true;
+
+    const nama = document.getElementById('namaTugas').value.trim();
+    const mataKuliah = document.getElementById('mataKuliahTugas').value;
+    const deadline = document.getElementById('deadlineTugas').value;
+
+    if (!nama) {
+        document.getElementById('errorNama').classList.remove('hidden');
+        document.getElementById('namaTugas').classList.add('border-red-500');
+        valid = false;
     }
+
+    if (!mataKuliah) {
+        document.getElementById('errorMataKuliah').classList.remove('hidden');
+        document.getElementById('mataKuliahTugas').classList.add('border-red-500');
+        valid = false;
+    }
+
+    if (!deadline) {
+        document.getElementById('errorDeadline').classList.remove('hidden');
+        document.getElementById('deadlineTugas').classList.add('border-red-500');
+        valid = false;
+    } else {
+        const tanggalDipilih = new Date(deadline);
+        const hariIni = new Date();
+        hariIni.setHours(0, 0, 0, 0);
+        
+        if (tanggalDipilih < hariIni) {
+            document.getElementById('errorDeadline').classList.remove('hidden');
+            document.getElementById('deadlineTugas').classList.add('border-red-500');
+            valid = false;
+        }
+    }
+
+    return valid;
 }
-Fitur Validasi:
 
 Real-time feedback dengan border merah
 Pesan error yang spesifik dan jelas
@@ -183,27 +198,21 @@ Mencegah submit jika ada error
 Clear error saat form dibuka kembali
 
 3. Filter dan Pencarian
-Fungsi Filter Utama
-javascriptfunction getFilteredTasks() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+// Filter tugas
+function dapatkanTugasTerfilter() {
+    const kataKunci = document.getElementById('inputPencarian').value.toLowerCase();
     const filterStatus = document.getElementById('filterStatus').value;
-    const filterSubject = document.getElementById('filterSubject').value;
+    const filterMataKuliah = document.getElementById('filterMataKuliah').value;
 
-    return tasks.filter(task => {
-        // Pencarian di nama dan mata kuliah
-        const matchesSearch = task.name.toLowerCase().includes(searchTerm) ||
-                            task.subject.toLowerCase().includes(searchTerm);
+    return daftarTugas.filter(tugas => {
+        const cocokPencarian = tugas.nama.toLowerCase().includes(kataKunci) ||
+                              tugas.mataKuliah.toLowerCase().includes(kataKunci);
+        const cocokStatus = filterStatus === 'semua' || 
+                           (filterStatus === 'selesai' && tugas.selesai) ||
+                           (filterStatus === 'belumSelesai' && !tugas.selesai);
+        const cocokMataKuliah = filterMataKuliah === 'semua' || tugas.mataKuliah === filterMataKuliah;
         
-        // Filter status
-        const matchesStatus = filterStatus === 'all' || 
-                            (filterStatus === 'completed' && task.completed) ||
-                            (filterStatus === 'pending' && !task.completed);
-        
-        // Filter mata kuliah
-        const matchesSubject = filterSubject === 'all' || 
-                              task.subject === filterSubject;
-        
-        return matchesSearch && matchesStatus && matchesSubject;
+        return cocokPencarian && cocokStatus && cocokMataKuliah;
     });
 }
 Cara Kerja:
@@ -215,29 +224,28 @@ Case-insensitive search dengan toLowerCase()
 Real-time filtering dengan event listener
 
 4. Deteksi Deadline Mendekat
-javascriptfunction isDeadlineNear(dateString) {
-    const deadline = new Date(dateString);
-    const today = new Date();
-    const diffTime = deadline - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays <= 3 && diffDays >= 0;
+function deadlineDekat(stringTanggal) {
+    const deadline = new Date(stringTanggal);
+    const hariIni = new Date();
+    const selisihWaktu = deadline - hariIni;
+    const selisihHari = Math.ceil(selisihWaktu / (1000 * 60 * 60 * 24));
+    return selisihHari <= 3 && selisihHari >= 0;
 }
-Logika:
+
+Cara Kerja:
 
 Menghitung selisih hari antara deadline dan hari ini
 Threshold: 3 hari atau kurang
 Menampilkan warning badge merah
 Pesan peringatan untuk tugas urgent
 
-5. Update Statistik Real-time
-javascriptfunction updateStatistics() {
-    const total = tasks.length;
-    const completed = tasks.filter(t => t.completed).length;
-    const pending = total - completed;
-
-    document.getElementById('totalTasks').textContent = total;
-    document.getElementById('completedTasks').textContent = completed;
-    document.getElementById('pendingTasks').textContent = pending;
+5. Update Real-time
+function deadlineDekat(stringTanggal) {
+    const deadline = new Date(stringTanggal);
+    const hariIni = new Date();
+    const selisihWaktu = deadline - hariIni;
+    const selisihHari = Math.ceil(selisihWaktu / (1000 * 60 * 60 * 24));
+    return selisihHari <= 3 && selisihHari >= 0;
 }
 Dipanggil setiap:
 
@@ -247,115 +255,24 @@ Menghapus tugas
 Toggle status penyelesaian
 
 
-
-
 Daftar Fitur yang Diimplementasikan
-Fitur Wajib
 
- Menambahkan tugas baru dengan nama, mata kuliah, dan deadline
- Menandai tugas sebagai selesai/belum selesai
- Menghapus tugas
- Filter berdasarkan status (selesai/belum selesai)
- Filter berdasarkan mata kuliah
- Pencarian tugas
- Menampilkan jumlah tugas yang belum selesai
- Validasi form lengkap
- localStorage untuk penyimpanan data
+1.  Menambahkan tugas baru dengan nama, mata kuliah, dan deadline
+2. Menandai tugas sebagai selesai/belum selesai
+3. Menghapus tugas
+4. Filter berdasarkan status (selesai/belum selesai)
+5. Filter berdasarkan mata kuliah
+6. Pencarian tugas
+7. Menampilkan jumlah tugas yang belum selesai
+8. Validasi form lengkap
+9. localStorage untuk penyimpanan data
+10. Edit/update tugas yang sudah ada
 
-Fitur Tambahan
-
- Edit/update tugas yang sudah ada
- Statistik lengkap (total, selesai, pending)
- Indikator deadline mendekat
- Desain responsive dan modern
- Animasi dan transisi smooth
- Konfirmasi sebelum delete
- Format tanggal Indonesia
- Modal form yang user-friendly
- Real-time update untuk filter
-
-
-Cara Menggunakan Aplikasi
-Menambah Tugas Baru
-
-Klik tombol "Tugas Baru" di pojok kanan atas
-Isi form:
-
-Nama Tugas: Contoh "Membuat Laporan Praktikum"
-Mata Kuliah: Pilih dari dropdown
-Deadline: Pilih tanggal dari date picker
-
-
-Klik "Simpan Tugas"
-Tugas akan muncul di daftar
-
-Menandai Tugas Selesai
-
-Klik icon checkbox (⭕) di sebelah kiri tugas
-Icon akan berubah menjadi ✅
-Nama tugas akan ter-strikethrough
-Background berubah menjadi abu-abu
-
-Mengedit Tugas
-
-Klik tombol Edit (✏️) pada tugas yang ingin diedit
-Form akan muncul dengan data tugas yang sudah terisi
-Ubah informasi yang diperlukan
-Klik "Update Tugas"
-
-Menghapus Tugas
-
-Klik tombol Delete (🗑️) pada tugas
-Konfirmasi penghapusan akan muncul
-Klik OK untuk menghapus atau Cancel untuk batal
-
-Mencari Tugas
-
-Ketik kata kunci di kolom pencarian
-Hasil akan difilter secara real-time
-Pencarian mencakup nama tugas dan mata kuliah
-
-Memfilter Tugas
-
-Filter Status: Pilih "Semua Status", "Belum Selesai", atau "Selesai"
-Filter Mata Kuliah: Pilih mata kuliah tertentu atau "Semua Mata Kuliah"
-Filter dapat dikombinasikan dengan pencarian
-
-
-🐛 Troubleshooting
-Data Hilang Setelah Refresh
-Solusi: Pastikan Anda menggunakan versi dengan localStorage (index.html), bukan versi demo.
-Validasi Error Tidak Muncul
-Solusi: Pastikan JavaScript diaktifkan di browser Anda.
-Tanggal Tidak Bisa Dipilih
-Solusi: Gunakan browser modern (Chrome, Firefox, Edge, Safari versi terbaru).
-Style Tidak Muncul
-Solusi: Pastikan koneksi internet aktif untuk memuat Tailwind CSS dari CDN.
-
-📝 Catatan Pengembangan
-Browser Compatibility
-
-✅ Chrome 90+
-✅ Firefox 88+
-✅ Safari 14+
-✅ Edge 90+
-
-Limitations
+Penjelasan Teknis:
 
 Data tersimpan per browser (tidak sync antar device)
 Maximum storage: ~5-10MB (tergantung browser)
 Tidak ada backup otomatis ke cloud
-
-Future Improvements
-
- Export/Import data (JSON)
- Dark mode
- Notifikasi push untuk deadline
- Kategori/tag untuk tugas
- Sorting (berdasarkan deadline, nama, dll)
- Drag and drop untuk reorder
- Calendar view
- Reminder email/WhatsApp
 
 
 
