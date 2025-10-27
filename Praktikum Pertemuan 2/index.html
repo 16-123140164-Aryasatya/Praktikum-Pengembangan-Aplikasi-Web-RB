@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Dashboard - Mahasiswa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="header-title">
+                    <span class="icon">📊</span>
+                    Personal Dashboard
+                </h1>
+                <div class="header-info">
+                    <div id="currentDateTime" class="datetime"></div>
+                    <div id="weatherInfo" class="weather"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="dashboard-grid">
+                
+                <!-- Jadwal Kuliah Section -->
+                <section class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">📅</span>
+                            Jadwal Kuliah
+                        </h2>
+                        <button class="btn btn-primary btn-sm" onclick="dashboard.scheduleManager.openModal()">
+                            + Tambah Jadwal
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="scheduleList" class="schedule-list"></div>
+                    </div>
+                </section>
+
+                <!-- Daftar Tugas Section -->
+                <section class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">✅</span>
+                            Daftar Tugas
+                        </h2>
+                        <button class="btn btn-success btn-sm" onclick="dashboard.taskManager.openModal()">
+                            + Tambah Tugas
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="taskList" class="task-list"></div>
+                    </div>
+                </section>
+
+                <!-- Catatan Cepat Section -->
+                <section class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="icon">📝</span>
+                            Catatan Cepat
+                        </h2>
+                        <button class="btn btn-warning btn-sm" onclick="dashboard.noteManager.openModal()">
+                            + Tambah Catatan
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="noteList" class="note-list"></div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Jadwal Kuliah -->
+    <div id="scheduleModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="scheduleModalTitle">Tambah Jadwal Kuliah</h3>
+                <button class="btn-close" onclick="dashboard.scheduleManager.closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Mata Kuliah</label>
+                    <input type="text" id="scheduleCourse" class="form-input" placeholder="Contoh: Pemrograman Web">
+                </div>
+                <div class="form-group">
+                    <label>Hari</label>
+                    <select id="scheduleDay" class="form-input">
+                        <option value="">Pilih Hari</option>
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                        <option value="Sabtu">Sabtu</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Waktu Mulai</label>
+                        <input type="time" id="scheduleStartTime" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Waktu Selesai</label>
+                        <input type="time" id="scheduleEndTime" class="form-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Ruangan</label>
+                    <input type="text" id="scheduleRoom" class="form-input" placeholder="Contoh: Lab A301">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="dashboard.scheduleManager.closeModal()">Batal</button>
+                <button class="btn btn-primary" onclick="dashboard.scheduleManager.saveSchedule()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tugas -->
+    <div id="taskModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="taskModalTitle">Tambah Tugas</h3>
+                <button class="btn-close" onclick="dashboard.taskManager.closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nama Tugas</label>
+                    <input type="text" id="taskName" class="form-input" placeholder="Contoh: Mengerjakan UTS">
+                </div>
+                <div class="form-group">
+                    <label>Mata Kuliah</label>
+                    <input type="text" id="taskCourse" class="form-input" placeholder="Contoh: Basis Data">
+                </div>
+                <div class="form-group">
+                    <label>Deadline</label>
+                    <input type="datetime-local" id="taskDeadline" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Prioritas</label>
+                    <select id="taskPriority" class="form-input">
+                        <option value="low">Rendah</option>
+                        <option value="medium">Sedang</option>
+                        <option value="high">Tinggi</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="dashboard.taskManager.closeModal()">Batal</button>
+                <button class="btn btn-success" onclick="dashboard.taskManager.saveTask()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Catatan -->
+    <div id="noteModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="noteModalTitle">Tambah Catatan</h3>
+                <button class="btn-close" onclick="dashboard.noteManager.closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Judul Catatan</label>
+                    <input type="text" id="noteTitle" class="form-input" placeholder="Judul catatan...">
+                </div>
+                <div class="form-group">
+                    <label>Isi Catatan</label>
+                    <textarea id="noteContent" class="form-textarea" rows="6" placeholder="Tulis catatan Anda di sini..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="dashboard.noteManager.closeModal()">Batal</button>
+                <button class="btn btn-warning" onclick="dashboard.noteManager.saveNote()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
