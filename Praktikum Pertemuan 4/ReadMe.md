@@ -17,7 +17,7 @@ Program ini dibuat untuk memenuhi tugas praktikum dengan fitur-fitur pengelolaan
 Program memiliki 6 menu pilihan:
 
 #### 1. Tampilkan Semua Data
-![Dashboard Utama](ScreenShot/tampilkan_semua_data.png)
+![Dashboard Utama](ScreenShots/tampilkan_semua_data.png)
 Menampilkan tabel lengkap semua mahasiswa dengan:
 - Nama
 - NIM
@@ -28,11 +28,11 @@ Menampilkan tabel lengkap semua mahasiswa dengan:
 - Grade (otomatis ditentukan)
 
 #### 2. Cari Nilai Tertinggi & Terendah
-![Dashboard Utama](ScreenShot/tinggi_rendah.png)
+![Dashboard Utama](ScreenShots/tinggi_rendah.png)
 Menampilkan mahasiswa dengan nilai akhir tertinggi dan terendah beserta nilainya.
 
 #### 3. Input Mahasiswa Baru
-![Dashboard Utama](ScreenShot/input_mahasiswa.png)
+![Dashboard Utama](ScreenShots/input_mahasiswa.png)
 Menambahkan data mahasiswa baru ke dalam sistem.
 
 **Input yang diminta:**
@@ -43,15 +43,15 @@ Menambahkan data mahasiswa baru ke dalam sistem.
 - Nilai Tugas (0-100)
 
 #### 4. Filter Berdasarkan Grade
-![Dashboard Utama](ScreenShot/filter.png)
+![Dashboard Utama](ScreenShots/filter.png)
 Menampilkan daftar mahasiswa yang memiliki grade tertentu (A/B/C/D/E).
 
 #### 5. Hitung Rata-rata Kelas
-![Dashboard Utama](ScreenShot/rata_rata.png)
+![Dashboard Utama](ScreenShots/rata_rata.png)
 Menghitung dan menampilkan rata-rata nilai akhir seluruh mahasiswa.
 
 #### 6. Keluar
-![Dashboard Utama](ScreenShot/keluar.png)
+![Dashboard Utama](ScreenShots/keluar.png)
 Mengakhiri program.
 
 ## Rumus dan Ketentuan
@@ -79,5 +79,6 @@ Nilai Akhir = (30% × UTS) + (40% × UAS) + (30% × Tugas)
 - Input nilai harus berupa angka (0-100)
 - Program case-sensitive untuk input grade (gunakan huruf kapital)
 - Semua perhitungan dilakukan secara otomatis
+
 
 
